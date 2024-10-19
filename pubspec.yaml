@@ -1,5 +1,5 @@
-name: app
-description: ""
+name: video_clipper
+description: "A Video Clipper GUI created with Flutter and Ffmpeg."
 publish_to: 'none'
 
 version: 1.0.0
@@ -28,6 +28,7 @@ flutter:
   assets:
     - assets/images/
     - assets/translations/
+    - assets/bin/Windows_x64/
 
 flutter_launcher_icons:
   android: "launcher_icon"
