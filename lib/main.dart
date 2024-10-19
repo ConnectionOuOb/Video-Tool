@@ -1,7 +1,10 @@
 import 'config.dart';
+import 'io/copy.dart';
 import 'page/home.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:url_strategy/url_strategy.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 void main() async {
@@ -9,6 +12,7 @@ void main() async {
   await EasyLocalization.ensureInitialized();
 
   setPathUrlStrategy();
+  init();
 
   runApp(
     EasyLocalization(
@@ -33,5 +37,19 @@ class VideoTool extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       home: const PageHome(),
     );
+  }
+}
+
+void init() async {
+  dirExec = (await getTemporaryDirectory()).path;
+
+  for (FileSystemEntity e in Directory(dirBinWindows).listSync()) {
+    if (e is File) {
+      String fileName = e.path.split(Platform.pathSeparator).last;
+      await copyFile(
+        '$dirBinWindows/$fileName',
+        '$dirExec/$fileName',
+      );
+    }
   }
 }
