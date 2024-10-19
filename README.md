@@ -1,2 +1,13 @@
-# VideoClipper
- A video clipper GUI based on FFMPEG.
+# app
+
+## Replace icon
+
+### Command
+
+```flutter pub run flutter_launcher_icons```
+
+## Build command
+
+### Window
+
+```flutter build windows```

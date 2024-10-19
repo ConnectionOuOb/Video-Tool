@@ -1,11 +1,11 @@
 {
-    "name": "video_clipper",
-    "short_name": "video_clipper",
+    "name": "app",
+    "short_name": "app",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#hexcode",
+    "theme_color": "#hexcode",
+    "description": "國立清華大學 課程查詢系統",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
