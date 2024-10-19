@@ -1,4 +1,4 @@
-# Video Clipper
+# Video Tool
 
 ## Replace icon
 

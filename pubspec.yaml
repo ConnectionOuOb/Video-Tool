@@ -1,5 +1,5 @@
 name: video_clipper
-description: "A Video Clipper GUI created with Flutter and Ffmpeg."
+description: "A Video Tool GUI created with Flutter and Ffmpeg."
 publish_to: 'none'
 
 version: 1.0.0
