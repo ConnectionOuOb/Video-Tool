@@ -1,4 +1,4 @@
-# app
+# Video Clipper
 
 ## Replace icon
 
