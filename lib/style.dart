@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
-TextStyle h1 = const TextStyle(fontSize: 23, fontWeight: FontWeight.bold);
-TextStyle h2 = const TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
-TextStyle h3 = const TextStyle(fontSize: 13, fontWeight: FontWeight.bold);
-TextStyle h4 = const TextStyle(fontSize: 10, fontWeight: FontWeight.bold);
-TextStyle p1 = const TextStyle(fontSize: 18);
-TextStyle p2 = const TextStyle(fontSize: 13);
-TextStyle p3 = const TextStyle(fontSize: 10);
+TextStyle h1 = const TextStyle(fontSize: 23, fontWeight: FontWeight.bold, color: Colors.black);
+TextStyle h2 = const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black);
+TextStyle h3 = const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black);
+TextStyle h4 = const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black);
+TextStyle p1 = const TextStyle(fontSize: 23, color: Colors.black);
+TextStyle p2 = const TextStyle(fontSize: 18, color: Colors.black);
+TextStyle p3 = const TextStyle(fontSize: 13, color: Colors.black);
+TextStyle p4 = const TextStyle(fontSize: 10, color: Colors.black);
 TextStyle errTitle = const TextStyle(fontSize: 20, color: Colors.red, fontWeight: FontWeight.bold);
 TextStyle errText = const TextStyle(fontSize: 15, color: Colors.red);
 
