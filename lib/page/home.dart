@@ -2,6 +2,8 @@ import '../frame/footer.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+import '../frame/nav.dart';
+
 class PageHome extends StatefulWidget {
   const PageHome({super.key});
 
@@ -18,9 +20,7 @@ class _PageHomeState extends State<PageHome> {
       supportedLocales: context.supportedLocales,
       localizationsDelegates: context.localizationDelegates,
       home: Scaffold(
-        appBar: AppBar(
-          title: Text("project_name".tr()),
-        ),
+        appBar: navBar(context, 'project_name'.tr(), const Text('Home')),
         body: const Center(child: Text('Test text')),
         bottomNavigationBar: footer(),
       ),

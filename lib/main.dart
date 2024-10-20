@@ -17,9 +17,9 @@ void main() async {
 
   runApp(
     EasyLocalization(
-      supportedLocales: supportedLocales,
+      supportedLocales: supportedLocales.values.toList(),
       path: 'assets/translations',
-      startLocale: supportedLocales.first,
+      startLocale: supportedLocales.values.first,
       child: const VideoTool(),
     ),
   );

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 // # Language
-const List<Locale> supportedLocales = [
-  Locale('zh', 'TW'),
-  Locale('en', 'US'),
-];
+const Map<String, Locale> supportedLocales = {
+  "中文": Locale('zh', 'TW'),
+  "English": Locale('en', 'US'),
+};
 
 // # Program
 String dirExec = "";
