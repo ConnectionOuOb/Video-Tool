@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+
 import 'button.dart';
 import '../style.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +16,7 @@ showSideMenu(BuildContext context, List<Widget> children) {
             margin: const EdgeInsets.only(right: 15, top: 15),
             decoration: BoxDecoration(
               color: Colors.white,
-              border: Border.all(
-                width: 2,
-                color: Colors.black,
-              ),
+              border: Border.all(width: 2, color: Colors.black),
               borderRadius: radius15,
             ),
             child: Column(
@@ -25,6 +24,7 @@ showSideMenu(BuildContext context, List<Widget> children) {
               children: [
                 iconButtonAction(
                   Icons.close_outlined,
+                  'home_language'.tr(),
                   () {
                     Navigator.of(context).pop();
                   },

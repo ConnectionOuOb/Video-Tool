@@ -5,10 +5,12 @@ import '../ui/button.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-PreferredSizeWidget navBar(BuildContext context, String title) {
+PreferredSizeWidget navBar(BuildContext context, String title, Widget otherAction) {
   return AppBar(
     title: Text(title),
     actions: [
+      otherAction,
+      const SizedBox(width: 10),
       languageSwitch(context),
       const SizedBox(width: 15),
     ],
@@ -18,6 +20,7 @@ PreferredSizeWidget navBar(BuildContext context, String title) {
 Widget languageSwitch(BuildContext context) {
   return iconButtonAction(
     Icons.language_rounded,
+    'home_language'.tr(),
     () {
       showSideMenu(
         context,

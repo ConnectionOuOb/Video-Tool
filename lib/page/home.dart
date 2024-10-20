@@ -9,6 +9,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+import '../ui/button.dart';
+
 class PageHome extends StatefulWidget {
   const PageHome({super.key});
 
@@ -37,7 +39,11 @@ class _PageHomeState extends State<PageHome> {
       supportedLocales: context.supportedLocales,
       localizationsDelegates: context.localizationDelegates,
       home: Scaffold(
-        appBar: navBar(context, 'project_name'.tr()),
+        appBar: navBar(
+          context,
+          'project_name'.tr(),
+          projectCreate(),
+        ),
         body: Padding(
           padding: EdgeInsets.symmetric(
             vertical: 10,
@@ -51,25 +57,23 @@ class _PageHomeState extends State<PageHome> {
   }
 
   Widget projectCreate() {
-    return Center(
-      child: TextButton(
-        style: buttonStyle(),
-        onPressed: () async {
-          String selectFilePath = await selectSingleFilePath(supportedExtensions);
+    return iconButtonAction(
+      Icons.add,
+      'home_project_new'.tr(),
+      () async {
+        String selectFilePath = await selectSingleFilePath(supportedExtensions);
 
-          projects.add(
-            Project(
-              name: selectFilePath.split(Platform.pathSeparator).last,
-              path: selectFilePath,
-            ),
-          );
+        projects.add(
+          Project(
+            name: selectFilePath.split(Platform.pathSeparator).last,
+            path: selectFilePath,
+          ),
+        );
 
-          projectSave(projects);
+        projectSave(projects);
 
-          setState(() {});
-        },
-        child: Text('home_project_new'.tr()),
-      ),
+        setState(() {});
+      },
     );
   }
 
@@ -85,7 +89,6 @@ class _PageHomeState extends State<PageHome> {
               context,
               MaterialPageRoute(
                 builder: (context) => Scaffold(
-                  appBar: navBar(context, 'project_name'.tr()),
                   body: Center(
                     child: Text('Project $index'),
                   ),
