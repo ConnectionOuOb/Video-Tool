@@ -1,7 +1,11 @@
+import '../style.dart';
+import '../config.dart';
 import '../object.dart';
 import '../io/local.dart';
+import '../io/picker.dart';
 import '../frame/footer.dart';
 import '../frame/navigator.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -24,6 +28,8 @@ class _PageHomeState extends State<PageHome> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    bool isWide = width > 700;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       locale: context.locale,
@@ -31,16 +37,43 @@ class _PageHomeState extends State<PageHome> {
       localizationsDelegates: context.localizationDelegates,
       home: Scaffold(
         appBar: navBar(context, 'project_name'.tr()),
-        body: projectList(),
+        body: Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: 30,
+            horizontal: width * (isWide ? 0.3 : 0.05),
+          ),
+          child: projects.isEmpty ? projectCreate() : projectList(),
+        ),
         bottomNavigationBar: footer(),
       ),
     );
   }
 
+  Widget projectCreate() {
+    return Center(
+      child: TextButton(
+        style: buttonStyle(),
+        onPressed: () async {
+          String selectFilePath = await selectSingleFilePath(supportedExtensions);
+
+          projects.add(
+            Project(
+              name: selectFilePath.split(Platform.pathSeparator).last,
+              path: selectFilePath,
+            ),
+          );
+
+          projectSave(projects);
+
+          setState(() {});
+        },
+        child: Text('home_project_new'.tr()),
+      ),
+    );
+  }
+
   Widget projectList() {
-    return projects.isEmpty ? Center(
-      child: CircularProgressIndicator(),
-    ) : ListView.builder(
+    return ListView.builder(
       itemCount: projects.length,
       itemBuilder: (context, index) {
         return ListTile(
