@@ -30,6 +30,7 @@ class _PageHomeState extends State<PageHome> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     bool isWide = width > 700;
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       locale: context.locale,
@@ -39,8 +40,8 @@ class _PageHomeState extends State<PageHome> {
         appBar: navBar(context, 'project_name'.tr()),
         body: Padding(
           padding: EdgeInsets.symmetric(
-            vertical: 30,
-            horizontal: width * (isWide ? 0.3 : 0.05),
+            vertical: 10,
+            horizontal: width * (isWide ? 0.2 : 0.05),
           ),
           child: projects.isEmpty ? projectCreate() : projectList(),
         ),
@@ -77,7 +78,8 @@ class _PageHomeState extends State<PageHome> {
       itemCount: projects.length,
       itemBuilder: (context, index) {
         return ListTile(
-          title: Text('Project $index'),
+          title: Text(projects[index].name, style: h2),
+          subtitle: Text(projects[index].path, style: p2),
           onTap: () {
             Navigator.push(
               context,
