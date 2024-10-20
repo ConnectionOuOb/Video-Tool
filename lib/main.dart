@@ -12,6 +12,7 @@ void main() async {
   await EasyLocalization.ensureInitialized();
 
   setPathUrlStrategy();
+
   init();
 
   runApp(
@@ -30,7 +31,6 @@ class VideoTool extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'project_name'.tr(),
       debugShowCheckedModeBanner: false,
       locale: context.locale,
       supportedLocales: context.supportedLocales,
@@ -46,6 +46,7 @@ void init() async {
   for (FileSystemEntity e in Directory(dirBinWindows).listSync()) {
     if (e is File) {
       String fileName = e.path.split(Platform.pathSeparator).last;
+
       await copyFile(
         '$dirBinWindows/$fileName',
         '$dirExec/$fileName',

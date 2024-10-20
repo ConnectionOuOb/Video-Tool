@@ -1,3 +1,4 @@
+import '../frame/footer.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -21,6 +22,7 @@ class _PageHomeState extends State<PageHome> {
           title: Text("project_name".tr()),
         ),
         body: const Center(child: Text('Test text')),
+        bottomNavigationBar: footer(),
       ),
     );
   }
