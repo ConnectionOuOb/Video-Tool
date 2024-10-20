@@ -41,7 +41,7 @@ class VideoTool extends StatelessWidget {
 }
 
 void init() async {
-  dirExec = (await getTemporaryDirectory()).path;
+  String dirTemp = (await getTemporaryDirectory()).path;
 
   for (FileSystemEntity e in Directory(dirBinWindows).listSync()) {
     if (e is File) {
@@ -49,7 +49,7 @@ void init() async {
 
       await copyFile(
         '$dirBinWindows/$fileName',
-        '$dirExec/$fileName',
+        '$dirTemp/$fileName',
       );
     }
   }

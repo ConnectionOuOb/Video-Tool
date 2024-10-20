@@ -5,7 +5,6 @@ import 'package:easy_localization/easy_localization.dart';
 PreferredSizeWidget navBar(
   BuildContext context,
   String title,
-  Widget child,
 ) {
   return AppBar(
     title: Text(title),

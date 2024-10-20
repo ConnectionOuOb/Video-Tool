@@ -10,7 +10,8 @@ Widget footer() {
         "Connection Lee. Copyright © 2024 Video Tool GUI. All rights reserved.",
         textAlign: TextAlign.center,
         style: TextStyle(
-          color: Colors.white,
+          fontSize: 15,
+          color: Colors.amber,
         ),
       ),
     ),
