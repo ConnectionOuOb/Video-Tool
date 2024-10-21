@@ -2,5 +2,12 @@
   "project_name": "影片處理工具",
   "home_language": "切換語言",
   "home_project_new": "建立新專案",
-  "home_project_recent": "最近的專案"
+  "home_project_recent": "最近專案",
+  "home_project_recent_no": "無專案，請點選右上角加號按鈕新增",
+  "home_project_delete": "刪除專案",
+  "home_project_delete_confirm": "確定要刪除此專案嗎？",
+  "home_project_delete_success": "專案已刪除",
+  "home_project_delete_fail": "專案刪除失敗",
+  "cancel": "取消",
+  "confirm": "確定"
 }

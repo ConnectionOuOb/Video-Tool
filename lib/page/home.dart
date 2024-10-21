@@ -49,7 +49,12 @@ class _PageHomeState extends State<PageHome> {
             vertical: 10,
             horizontal: width * (isWide ? 0.2 : 0.05),
           ),
-          child: projects.isEmpty ? projectCreate() : projectList(),
+          child: projects.isEmpty
+              ? Text(
+                  'home_project_recent_no'.tr(),
+                  style: h2,
+                )
+              : projectList(),
         ),
         bottomNavigationBar: footer(),
       ),
@@ -62,6 +67,10 @@ class _PageHomeState extends State<PageHome> {
       'home_project_new'.tr(),
       () async {
         String selectFilePath = await selectSingleFilePath(supportedExtensions);
+
+        if (selectFilePath.isEmpty) {
+          return;
+        }
 
         projects.add(
           Project(
