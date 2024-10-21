@@ -1,3 +1,4 @@
+import 'editor.dart';
 import '../style.dart';
 import '../config.dart';
 import '../object.dart';
@@ -5,13 +6,12 @@ import '../io/local.dart';
 import '../io/picker.dart';
 import '../frame/footer.dart';
 import '../frame/navigator.dart';
+import '../ui/pop/alert.dart';
+import '../ui/pop/confirm.dart';
+import '../ui/button/icon.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-
-import '../ui/button.dart';
-import '../ui/pop.dart';
-import 'editor.dart';
 
 class PageHome extends StatefulWidget {
   const PageHome({super.key});
@@ -70,12 +70,12 @@ class _PageHomeState extends State<PageHome> {
       () {
         selectSingleFilePath(supportedExtensions).then((value) {
           if (value.isEmpty) {
-            showError(context, 'home_project_not_select'.tr());
+            showInfo(context, 'home_project_not_select'.tr(), isAlert: true);
             return;
           }
 
           if (projects.any((element) => element.path == value)) {
-            showError(context, 'home_project_exist'.tr());
+            showInfo(context, 'home_project_exist'.tr(), isAlert: true);
             return;
           }
 
@@ -118,11 +118,17 @@ class _PageHomeState extends State<PageHome> {
           style: buttonStyle(),
           icon: const Icon(Icons.delete, color: Colors.red),
           onPressed: () {
-            projects.remove(p);
-
-            projectSave(projects);
-
-            setState(() {});
+            showConfirm(
+              context,
+              "home_project_delete_confirm".tr(),
+              () {
+                projects.remove(p);
+                projectSave(projects);
+                setState(() {});
+                Navigator.pop(context);
+              },
+              isAlert: true,
+            );
           },
         ),
         onTap: () {

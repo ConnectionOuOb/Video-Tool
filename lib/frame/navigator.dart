@@ -1,7 +1,7 @@
 import '../config.dart';
 import '../style.dart';
 import '../ui/action.dart';
-import '../ui/button.dart';
+import '../ui/button/icon.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
