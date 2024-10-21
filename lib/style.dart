@@ -8,14 +8,14 @@ TextStyle p1 = const TextStyle(fontSize: 23, color: Colors.black);
 TextStyle p2 = const TextStyle(fontSize: 18, color: Colors.black);
 TextStyle p3 = const TextStyle(fontSize: 13, color: Colors.black);
 TextStyle p4 = const TextStyle(fontSize: 10, color: Colors.black);
-TextStyle errTitle = const TextStyle(fontSize: 20, color: Colors.red, fontWeight: FontWeight.bold);
+TextStyle errTitle = const TextStyle(fontSize: 18, color: Colors.red, fontWeight: FontWeight.bold);
 TextStyle errText = const TextStyle(fontSize: 15, color: Colors.red);
 
 BorderRadius radius15 = BorderRadius.circular(15);
 
 ButtonStyle buttonStyle() {
   return ButtonStyle(
-    padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
+    padding: MaterialStateProperty.all(EdgeInsets.zero),
     shape: MaterialStateProperty.all(
       RoundedRectangleBorder(
         side: const BorderSide(color: Colors.purple),

@@ -1,8 +1,11 @@
+import '../object.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class PageEditor extends StatefulWidget {
-  const PageEditor({super.key});
+  const PageEditor({super.key, required this.project});
+
+  final Project project;
 
   @override
   State<PageEditor> createState() => _PageEditorState();
@@ -18,7 +21,13 @@ class _PageEditorState extends State<PageEditor> {
       localizationsDelegates: context.localizationDelegates,
       home: Scaffold(
         appBar: AppBar(
-          title: Text("project_name".tr()),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          title: Text(widget.project.name),
         ),
         body: const Center(child: Text('Test text')),
       ),

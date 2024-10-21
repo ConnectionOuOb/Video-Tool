@@ -18,7 +18,7 @@ PreferredSizeWidget navBar(BuildContext context, String title, Widget otherActio
 }
 
 Widget languageSwitch(BuildContext context) {
-  return iconButtonAction(
+  return iconButtonActionOutline(
     Icons.language_rounded,
     'home_language'.tr(),
     () {

@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import '../ui/button.dart';
+import '../ui/pop.dart';
+import 'editor.dart';
 
 class PageHome extends StatefulWidget {
   const PageHome({super.key});
@@ -62,26 +64,32 @@ class _PageHomeState extends State<PageHome> {
   }
 
   Widget projectCreate() {
-    return iconButtonAction(
+    return iconButtonActionOutline(
       Icons.add,
       'home_project_new'.tr(),
-      () async {
-        String selectFilePath = await selectSingleFilePath(supportedExtensions);
+      () {
+        selectSingleFilePath(supportedExtensions).then((value) {
+          if (value.isEmpty) {
+            showError(context, 'home_project_not_select'.tr());
+            return;
+          }
 
-        if (selectFilePath.isEmpty) {
-          return;
-        }
+          if (projects.any((element) => element.path == value)) {
+            showError(context, 'home_project_exist'.tr());
+            return;
+          }
 
-        projects.add(
-          Project(
-            name: selectFilePath.split(Platform.pathSeparator).last,
-            path: selectFilePath,
-          ),
-        );
+          projects.add(
+            Project(
+              name: value.split(Platform.pathSeparator).last,
+              path: value,
+            ),
+          );
 
-        projectSave(projects);
+          projectSave(projects);
 
-        setState(() {});
+          setState(() {});
+        });
       },
     );
   }
@@ -90,24 +98,42 @@ class _PageHomeState extends State<PageHome> {
     return ListView.builder(
       itemCount: projects.length,
       itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(projects[index].name, style: h2),
-          subtitle: Text(projects[index].path, style: p2),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Scaffold(
-                  body: Center(
-                    child: Text('Project $index'),
-                  ),
-                  bottomNavigationBar: footer(),
-                ),
-              ),
-            );
-          },
-        );
+        return projectItem(projects[index]);
       },
+    );
+  }
+
+  Widget projectItem(Project p) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: ListTile(
+        title: Text(p.name, style: h2),
+        subtitle: Text(p.path, style: p2),
+        contentPadding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+        shape: RoundedRectangleBorder(
+          borderRadius: radius15,
+          side: const BorderSide(color: Colors.purple),
+        ),
+        trailing: IconButton(
+          style: buttonStyle(),
+          icon: const Icon(Icons.delete, color: Colors.red),
+          onPressed: () {
+            projects.remove(p);
+
+            projectSave(projects);
+
+            setState(() {});
+          },
+        ),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PageEditor(project: p),
+            ),
+          );
+        },
+      ),
     );
   }
 

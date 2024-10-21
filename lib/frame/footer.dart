@@ -11,7 +11,7 @@ Widget footer() {
         textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: 15,
-          color: Colors.amber,
+          color: Colors.yellowAccent,
         ),
       ),
     ),
