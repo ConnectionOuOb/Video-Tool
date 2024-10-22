@@ -1,3 +1,6 @@
+import 'package:video_clipper/style.dart';
+import 'package:video_clipper/ui/button/icon.dart';
+
 import '../object.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -54,6 +57,8 @@ class _PageEditorState extends State<PageEditor> {
             child: Column(
               children: [
                 videoPlayer(),
+                const SizedBox(height: 10),
+                videoControl(),
                 const SizedBox(height: 20),
                 const Divider(),
                 const SizedBox(height: 20),
@@ -67,12 +72,36 @@ class _PageEditorState extends State<PageEditor> {
   }
 
   Widget videoPlayer() {
-    return _controller.value.isInitialized
-        ? AspectRatio(
-            aspectRatio: _controller.value.aspectRatio,
-            child: VideoPlayer(_controller),
-          )
-        : const CircularProgressIndicator();
+    return Container(
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(borderRadius: radius15),
+      child: _controller.value.isInitialized
+          ? AspectRatio(
+              aspectRatio: _controller.value.aspectRatio,
+              child: VideoPlayer(_controller),
+            )
+          : const CircularProgressIndicator(),
+    );
+  }
+
+  Widget videoControl() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        iconButtonActionOutline(
+          _controller.value.isPlaying ? Icons.pause_outlined : Icons.play_arrow_outlined,
+          "",
+          () {
+            if (_controller.value.isPlaying) {
+              _controller.pause();
+            } else {
+              _controller.play();
+            }
+            setState(() {});
+          },
+        )
+      ],
+    );
   }
 
   Widget videoTool() {
