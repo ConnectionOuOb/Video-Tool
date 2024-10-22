@@ -1,6 +1,10 @@
 import 'config.dart';
+import 'io/copy.dart';
+import 'page/home.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:url_strategy/url_strategy.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 void main() async {
@@ -9,52 +13,44 @@ void main() async {
 
   setPathUrlStrategy();
 
+  init();
+
   runApp(
     EasyLocalization(
-      supportedLocales: supportedLocales,
+      supportedLocales: supportedLocales.values.toList(),
       path: 'assets/translations',
-      startLocale: supportedLocales.first,
-      child: const VideoClipper(),
+      startLocale: supportedLocales.values.first,
+      child: const VideoTool(),
     ),
   );
 }
 
-class VideoClipper extends StatelessWidget {
-  const VideoClipper({super.key});
+class VideoTool extends StatelessWidget {
+  const VideoTool({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
       locale: context.locale,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(),
+      supportedLocales: context.supportedLocales,
+      localizationsDelegates: context.localizationDelegates,
+      home: const PageHome(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+void init() async {
+  String dirTemp = (await getTemporaryDirectory()).path;
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+  for (FileSystemEntity e in Directory(dirBinWindows).listSync()) {
+    if (e is File) {
+      String fileName = e.path.split(Platform.pathSeparator).last;
 
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text("Title"),
-      ),
-      body: const Center(child: Text('Test text')),
-    );
+      await copyFile(
+        '$dirBinWindows/$fileName',
+        '$dirTemp/$fileName',
+      );
+    }
   }
 }
