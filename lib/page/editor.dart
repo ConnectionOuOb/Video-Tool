@@ -67,7 +67,12 @@ class _PageEditorState extends State<PageEditor> {
   }
 
   Widget videoPlayer() {
-    return Container();
+    return _controller.value.isInitialized
+        ? AspectRatio(
+            aspectRatio: _controller.value.aspectRatio,
+            child: VideoPlayer(_controller),
+          )
+        : const CircularProgressIndicator();
   }
 
   Widget videoTool() {
