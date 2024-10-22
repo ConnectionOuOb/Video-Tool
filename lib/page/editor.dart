@@ -88,7 +88,10 @@ class _PageEditorState extends State<PageEditor> {
       },
       child: Container(
         clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(borderRadius: radius15),
+        decoration: BoxDecoration(
+          borderRadius: radius15,
+          color: Colors.transparent,
+        ),
         child: Stack(
           clipBehavior: Clip.antiAlias,
           children: [
@@ -107,10 +110,42 @@ class _PageEditorState extends State<PageEditor> {
                   color: Colors.black.withOpacity(0.7),
                   child: Column(
                     children: [
-                      LinearProgressIndicator(
-                        backgroundColor: Colors.grey.shade300,
-                        valueColor: const AlwaysStoppedAnimation(Colors.purpleAccent),
-                        value: _controller.value.position.inMilliseconds / _controller.value.duration.inMilliseconds,
+                      GestureDetector(
+                        onTapDown: (details) {
+                          final box = context.findRenderObject() as RenderBox;
+                          final tapPos = box.globalToLocal(details.globalPosition);
+                          final percentage = tapPos.dx / box.size.width;
+
+                          final targetPosition = percentage.clamp(0.0, 1.0);
+                          final duration = _controller.value.duration;
+                          final newPosition = duration * targetPosition;
+
+                          _controller.seekTo(newPosition);
+                        },
+                        onHorizontalDragUpdate: (details) {
+                          final box = context.findRenderObject() as RenderBox;
+                          final tapPos = box.globalToLocal(details.globalPosition);
+                          final percentage = tapPos.dx / box.size.width;
+
+                          final targetPosition = percentage.clamp(0.0, 1.0);
+                          final duration = _controller.value.duration;
+                          final newPosition = duration * targetPosition;
+
+                          _controller.seekTo(newPosition);
+                        },
+                        child: SizedBox(
+                          height: 10,
+                          child: VideoProgressIndicator(
+                            _controller,
+                            allowScrubbing: true,
+                            colors: VideoProgressColors(
+                              playedColor: Colors.purpleAccent,
+                              bufferedColor: Colors.grey.shade400,
+                              backgroundColor: Colors.grey.shade300,
+                            ),
+                            padding: EdgeInsets.zero,
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 5),
                       videoControl(),
