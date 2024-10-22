@@ -59,9 +59,8 @@ class _PageEditorState extends State<PageEditor> {
                 videoPlayer(),
                 const SizedBox(height: 10),
                 videoControl(),
-                const SizedBox(height: 20),
                 const Divider(),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 videoTool(),
               ],
             ),
@@ -85,12 +84,38 @@ class _PageEditorState extends State<PageEditor> {
   }
 
   Widget videoControl() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Wrap(
+      spacing: 10,
+      runSpacing: 10,
+      alignment: WrapAlignment.center,
+      runAlignment: WrapAlignment.center,
       children: [
         iconButtonActionOutline(
+          Icons.replay_30_outlined,
+          "${"editor_backward".tr()} 30 ${"editor_second".tr()}",
+          () {
+            _controller.seekTo(_controller.value.position - const Duration(seconds: 30));
+          },
+        ),
+        iconButtonActionOutline(
+          Icons.replay_5_outlined,
+          "${"editor_backward".tr()} 5 ${"editor_second".tr()}",
+          () {
+            _controller.seekTo(_controller.value.position - const Duration(seconds: 5));
+          },
+        ),
+        iconButtonActionOutline(
+          Icons.replay_outlined,
+          'editor_replay'.tr(),
+          () {
+            _controller.pause();
+            _controller.seekTo(const Duration());
+            setState(() {});
+          },
+        ),
+        iconButtonActionOutline(
           _controller.value.isPlaying ? Icons.pause_outlined : Icons.play_arrow_outlined,
-          "",
+          _controller.value.isPlaying ? 'editor_pause'.tr() : 'editor_play'.tr(),
           () {
             if (_controller.value.isPlaying) {
               _controller.pause();
@@ -99,7 +124,21 @@ class _PageEditorState extends State<PageEditor> {
             }
             setState(() {});
           },
-        )
+        ),
+        iconButtonActionOutline(
+          Icons.forward_5_outlined,
+          "${"editor_forward".tr()} 5 ${"editor_second".tr()}",
+          () {
+            _controller.seekTo(_controller.value.position + const Duration(seconds: 5));
+          },
+        ),
+        iconButtonActionOutline(
+          Icons.forward_30_outlined,
+          "${"editor_forward".tr()} 30 ${"editor_second".tr()}",
+          () {
+            _controller.seekTo(_controller.value.position + const Duration(seconds: 30));
+          },
+        ),
       ],
     );
   }
