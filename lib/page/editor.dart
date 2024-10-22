@@ -74,6 +74,7 @@ class _PageEditorState extends State<PageEditor> {
 
   Widget videoPlayer() {
     return InkWell(
+      borderRadius: radius15,
       onHover: (value) {
         isHover = value;
         setState(() {});
