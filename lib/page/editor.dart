@@ -26,6 +26,7 @@ class _PageEditorState extends State<PageEditor> {
     )..initialize().then((_) {
         setState(() {});
       });
+
     super.initState();
   }
 
@@ -71,15 +72,25 @@ class _PageEditorState extends State<PageEditor> {
   }
 
   Widget videoPlayer() {
-    return Container(
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(borderRadius: radius15),
-      child: _controller.value.isInitialized
-          ? AspectRatio(
-              aspectRatio: _controller.value.aspectRatio,
-              child: VideoPlayer(_controller),
-            )
-          : const CircularProgressIndicator(),
+    return InkWell(
+      onTap: () {
+        if (_controller.value.isPlaying) {
+          _controller.pause();
+        } else {
+          _controller.play();
+        }
+        setState(() {});
+      },
+      child: Container(
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(borderRadius: radius15),
+        child: _controller.value.isInitialized
+            ? AspectRatio(
+                aspectRatio: _controller.value.aspectRatio,
+                child: VideoPlayer(_controller),
+              )
+            : const CircularProgressIndicator(),
+      ),
     );
   }
 
