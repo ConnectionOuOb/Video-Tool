@@ -2,6 +2,7 @@ import 'editor.dart';
 import '../style.dart';
 import '../config.dart';
 import '../object.dart';
+import '../io/exist.dart';
 import '../io/local.dart';
 import '../io/picker.dart';
 import '../frame/footer.dart';
@@ -21,11 +22,11 @@ class PageHome extends StatefulWidget {
 }
 
 class _PageHomeState extends State<PageHome> {
-  List<Project> projects = [];
+  List<Video> videos = [];
 
   @override
   void initState() {
-    loadProjects();
+    loadVideos();
 
     super.initState();
   }
@@ -44,49 +45,49 @@ class _PageHomeState extends State<PageHome> {
         appBar: navBar(
           context,
           'project_name'.tr(),
-          projectCreate(),
+          videoCreate(),
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(
             vertical: 10,
             horizontal: width * (isWide ? 0.2 : 0.05),
           ),
-          child: projects.isEmpty
+          child: videos.isEmpty
               ? Text(
-                  'home_project_recent_no'.tr(),
+                  'home_video_recent_no'.tr(),
                   style: h2,
                 )
-              : projectList(),
+              : videoList(),
         ),
         bottomNavigationBar: footer(),
       ),
     );
   }
 
-  Widget projectCreate() {
+  Widget videoCreate() {
     return iconButtonActionOutline(
       Icons.add,
-      'home_project_new'.tr(),
+      'home_video_new'.tr(),
       () {
         selectSingleFilePath(supportedExtensions).then((value) {
           if (value.isEmpty) {
-            showInfo(context, 'home_project_not_select'.tr(), isAlert: true);
+            showInfo(context, 'home_video_not_select'.tr(), isAlert: true);
             return;
           }
 
-          if (projects.any((element) => element.path == value)) {
-            showInfo(context, 'home_project_exist'.tr(), isAlert: true);
+          if (videos.any((element) => element.path == value)) {
+            showInfo(context, 'home_video_exist'.tr(), isAlert: true);
             return;
           }
 
-          projects.add(
-            Project(
+          videos.add(
+            Video(
               name: value.split(Platform.pathSeparator).last,
               path: value,
             ),
           );
 
-          projectSave(projects);
+          videoSave(videos);
 
           setState(() {});
         });
@@ -94,16 +95,16 @@ class _PageHomeState extends State<PageHome> {
     );
   }
 
-  Widget projectList() {
+  Widget videoList() {
     return ListView.builder(
-      itemCount: projects.length,
+      itemCount: videos.length,
       itemBuilder: (context, index) {
-        return projectItem(projects[index]);
+        return videoItem(videos[index]);
       },
     );
   }
 
-  Widget projectItem(Project p) {
+  Widget videoItem(Video p) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: ListTile(
@@ -120,11 +121,9 @@ class _PageHomeState extends State<PageHome> {
           onPressed: () {
             showConfirm(
               context,
-              "home_project_delete_confirm".tr(),
+              "home_video_delete_confirm".tr(),
               () {
-                projects.remove(p);
-                projectSave(projects);
-                setState(() {});
+                deleteVideo(p);
                 Navigator.pop(context);
               },
               isAlert: true,
@@ -132,10 +131,16 @@ class _PageHomeState extends State<PageHome> {
           },
         ),
         onTap: () {
+          if (!existFile(p.path)) {
+            showInfo(context, 'home_video_not_exist'.tr(), isAlert: true);
+            deleteVideo(p);
+            return;
+          }
+
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => PageEditor(project: p),
+              builder: (context) => PageEditor(video: p),
             ),
           );
         },
@@ -143,9 +148,15 @@ class _PageHomeState extends State<PageHome> {
     );
   }
 
-  Future<void> loadProjects() async {
-    projects = await projectLoad();
+  Future<void> loadVideos() async {
+    videos = await videoLoad();
 
+    setState(() {});
+  }
+
+  Future<void> deleteVideo(Video p) async {
+    videos.remove(p);
+    await videoSave(videos);
     setState(() {});
   }
 }

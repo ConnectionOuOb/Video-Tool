@@ -1,14 +1,14 @@
-class Project {
+class Video {
   String name;
   String path;
 
-  Project({
+  Video({
     required this.name,
     required this.path,
   });
 
-  factory Project.fromJson(Map<String, dynamic> json) {
-    return Project(
+  factory Video.fromJson(Map<String, dynamic> json) {
+    return Video(
       name: json['name'],
       path: json['path'],
     );

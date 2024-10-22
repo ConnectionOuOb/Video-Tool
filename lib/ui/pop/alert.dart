@@ -13,7 +13,6 @@ showInfo(BuildContext context, String message, {bool isAlert = false}) {
           style: isAlert ? errTitle : h2,
         ),
         content: Text(message, style: isAlert ? errText : p2),
-        actionsAlignment: MainAxisAlignment.center,
         actions: [
           textButtonAction(
             'confirm'.tr(),

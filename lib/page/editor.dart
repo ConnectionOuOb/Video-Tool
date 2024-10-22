@@ -3,15 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class PageEditor extends StatefulWidget {
-  const PageEditor({super.key, required this.project});
+  const PageEditor({super.key, required this.video});
 
-  final Project project;
+  final Video video;
 
   @override
   State<PageEditor> createState() => _PageEditorState();
 }
 
 class _PageEditorState extends State<PageEditor> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -27,7 +32,7 @@ class _PageEditorState extends State<PageEditor> {
               Navigator.pop(context);
             },
           ),
-          title: Text(widget.project.name),
+          title: Text(widget.video.name),
         ),
         body: const Center(child: Text('Test text')),
       ),

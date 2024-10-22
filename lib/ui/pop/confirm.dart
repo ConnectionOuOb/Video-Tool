@@ -14,7 +14,6 @@ showConfirm(
     builder: (BuildContext context) {
       return AlertDialog(
         content: Text(message, style: isAlert ? errText : p2),
-        actionsAlignment: MainAxisAlignment.center,
         actionsOverflowButtonSpacing: 10,
         actions: [
           textButtonAction(
