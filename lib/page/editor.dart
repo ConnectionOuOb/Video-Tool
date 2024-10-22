@@ -17,6 +17,7 @@ class PageEditor extends StatefulWidget {
 }
 
 class _PageEditorState extends State<PageEditor> {
+  bool isHover = false;
   late VideoPlayerController _controller;
 
   @override
@@ -58,8 +59,6 @@ class _PageEditorState extends State<PageEditor> {
             child: Column(
               children: [
                 videoPlayer(),
-                const SizedBox(height: 10),
-                videoControl(),
                 const SizedBox(height: 5),
                 const Divider(),
                 const SizedBox(height: 10),
@@ -75,6 +74,10 @@ class _PageEditorState extends State<PageEditor> {
 
   Widget videoPlayer() {
     return InkWell(
+      onHover: (value) {
+        isHover = value;
+        setState(() {});
+      },
       onTap: () {
         if (_controller.value.isPlaying) {
           _controller.pause();
@@ -86,12 +89,38 @@ class _PageEditorState extends State<PageEditor> {
       child: Container(
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(borderRadius: radius15),
-        child: _controller.value.isInitialized
-            ? AspectRatio(
-                aspectRatio: _controller.value.aspectRatio,
-                child: VideoPlayer(_controller),
-              )
-            : const CircularProgressIndicator(),
+        child: Stack(
+          clipBehavior: Clip.antiAlias,
+          children: [
+            _controller.value.isInitialized
+                ? AspectRatio(
+                    aspectRatio: _controller.value.aspectRatio,
+                    child: VideoPlayer(_controller),
+                  )
+                : const CircularProgressIndicator(),
+            if (isHover)
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  color: Colors.black.withOpacity(0.7),
+                  child: Column(
+                    children: [
+                      LinearProgressIndicator(
+                        backgroundColor: Colors.grey.shade300,
+                        valueColor: const AlwaysStoppedAnimation(Colors.purpleAccent),
+                        value: _controller.value.position.inMilliseconds / _controller.value.duration.inMilliseconds,
+                      ),
+                      const SizedBox(height: 5),
+                      videoControl(),
+                      const SizedBox(height: 5),
+                    ],
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -103,21 +132,25 @@ class _PageEditorState extends State<PageEditor> {
       alignment: WrapAlignment.center,
       runAlignment: WrapAlignment.center,
       children: [
-        iconButtonActionOutline(
+        iconButtonAction(
           Icons.replay_30_outlined,
           "${"editor_backward".tr()} 30 ${"editor_second".tr()}",
           () {
             _controller.seekTo(_controller.value.position - const Duration(seconds: 30));
+            setState(() {});
           },
+          color: Colors.white,
         ),
-        iconButtonActionOutline(
+        iconButtonAction(
           Icons.replay_5_outlined,
           "${"editor_backward".tr()} 5 ${"editor_second".tr()}",
           () {
             _controller.seekTo(_controller.value.position - const Duration(seconds: 5));
+            setState(() {});
           },
+          color: Colors.white,
         ),
-        iconButtonActionOutline(
+        iconButtonAction(
           Icons.replay_outlined,
           'editor_replay'.tr(),
           () {
@@ -125,8 +158,9 @@ class _PageEditorState extends State<PageEditor> {
             _controller.seekTo(const Duration());
             setState(() {});
           },
+          color: Colors.white,
         ),
-        iconButtonActionOutline(
+        iconButtonAction(
           _controller.value.isPlaying ? Icons.pause_outlined : Icons.play_arrow_outlined,
           _controller.value.isPlaying ? 'editor_pause'.tr() : 'editor_play'.tr(),
           () {
@@ -137,20 +171,25 @@ class _PageEditorState extends State<PageEditor> {
             }
             setState(() {});
           },
+          color: Colors.white,
         ),
-        iconButtonActionOutline(
+        iconButtonAction(
           Icons.forward_5_outlined,
           "${"editor_forward".tr()} 5 ${"editor_second".tr()}",
           () {
             _controller.seekTo(_controller.value.position + const Duration(seconds: 5));
+            setState(() {});
           },
+          color: Colors.white,
         ),
-        iconButtonActionOutline(
+        iconButtonAction(
           Icons.forward_30_outlined,
           "${"editor_forward".tr()} 30 ${"editor_second".tr()}",
           () {
             _controller.seekTo(_controller.value.position + const Duration(seconds: 30));
+            setState(() {});
           },
+          color: Colors.white,
         ),
       ],
     );

@@ -1,7 +1,12 @@
 import '../../style.dart';
 import 'package:flutter/material.dart';
 
-Widget iconButtonAction(IconData icon, String tooltip, Function() onPressed) {
+Widget iconButtonAction(
+  IconData icon,
+  String tooltip,
+  Function() onPressed, {
+  color = Colors.black,
+}) {
   return IconButton(
     alignment: Alignment.center,
     tooltip: tooltip,
@@ -10,7 +15,7 @@ Widget iconButtonAction(IconData icon, String tooltip, Function() onPressed) {
       icon,
       weight: 300,
       grade: -25,
-      color: Colors.black,
+      color: color,
     ),
     onPressed: onPressed,
   );
