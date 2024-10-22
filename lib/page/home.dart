@@ -35,7 +35,6 @@ class _PageHomeState extends State<PageHome> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     bool isWide = width > 700;
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       locale: context.locale,

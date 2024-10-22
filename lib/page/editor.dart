@@ -1,5 +1,7 @@
 import '../object.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class PageEditor extends StatefulWidget {
@@ -12,13 +14,22 @@ class PageEditor extends StatefulWidget {
 }
 
 class _PageEditorState extends State<PageEditor> {
+  late VideoPlayerController _controller;
+
   @override
   void initState() {
+    _controller = VideoPlayerController.file(
+      File(widget.video.path),
+    )..initialize().then((_) {
+        setState(() {});
+      });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    bool isWide = width > 700;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       locale: context.locale,
@@ -34,8 +45,32 @@ class _PageEditorState extends State<PageEditor> {
           ),
           title: Text(widget.video.name),
         ),
-        body: const Center(child: Text('Test text')),
+        body: Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: 10,
+            horizontal: width * (isWide ? 0.2 : 0.05),
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                videoPlayer(),
+                const SizedBox(height: 20),
+                const Divider(),
+                const SizedBox(height: 20),
+                videoTool(),
+              ],
+            ),
+          ),
+        ),
       ),
     );
+  }
+
+  Widget videoPlayer() {
+    return Container();
+  }
+
+  Widget videoTool() {
+    return Container();
   }
 }
