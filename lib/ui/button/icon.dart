@@ -21,12 +21,19 @@ Widget iconButtonAction(
   );
 }
 
-Widget iconButtonActionOutline(IconData icon, String tooltip, Function() onPressed) {
+Widget iconButtonActionOutline(
+  IconData icon,
+  String tooltip,
+  Function() onPressed, {
+  color = Colors.white,
+}) {
   return IconButton(
     alignment: Alignment.center,
     tooltip: tooltip,
     padding: EdgeInsets.zero,
-    style: buttonStyle(),
+    style: buttonStyle().copyWith(
+      backgroundColor: MaterialStateProperty.all(color),
+    ),
     icon: Icon(
       icon,
       weight: 300,

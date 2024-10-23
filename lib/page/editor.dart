@@ -1,6 +1,7 @@
 import '../style.dart';
 import '../object.dart';
 import '../frame/footer.dart';
+import '../ui/button/text.dart';
 import '../ui/button/icon.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -17,7 +18,9 @@ class PageEditor extends StatefulWidget {
 }
 
 class _PageEditorState extends State<PageEditor> {
+  int editing = -1;
   bool isHover = false;
+  bool onEditingStart = true;
   List<VideoSection> sections = [];
   final GlobalKey _keyPlayer = GlobalKey();
   late VideoPlayerController _controller;
@@ -52,12 +55,12 @@ class _PageEditorState extends State<PageEditor> {
           ),
           title: Text(widget.video.name),
         ),
-        body: Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: 10,
-            horizontal: width * (isWide ? 0.2 : 0.05),
-          ),
-          child: SingleChildScrollView(
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: width * (isWide ? 0.2 : 0.05),
+            ),
             child: Column(
               children: [
                 videoPlayer(),
@@ -228,45 +231,93 @@ class _PageEditorState extends State<PageEditor> {
   Widget videoTool() {
     return Column(
       children: [
-        if (sections.isNotEmpty) ...sections.map((e) => videoSection(e)),
-        iconButtonAction(
+        textIconButtonAction(
           Icons.add,
-          'editor_section'.tr(),
+          'editor_section_add'.tr(),
           () {
             sections.add(VideoSection.init(_controller.value.position));
 
             setState(() {});
           },
         ),
+        const SizedBox(height: 10),
+        if (sections.isNotEmpty)
+          Wrap(
+            spacing: 10,
+            runSpacing: 10,
+            alignment: WrapAlignment.center,
+            runAlignment: WrapAlignment.center,
+            children: sections.asMap().entries.map((e) => videoSection(e.key, e.value)).toList(),
+          ),
       ],
     );
   }
 
-  Widget videoSection(VideoSection vs) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: radius15,
-        color: Colors.purple.withOpacity(0.1),
-      ),
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.all(10),
-      child: Wrap(
-        children: [
-          Text(
-            "${vs.start.inSeconds} - ${vs.end.inSeconds}",
-            style: h2,
-          ),
-          const SizedBox(width: 10),
-          iconButtonAction(
-            Icons.delete_outline,
-            'editor_delete'.tr(),
-            () {
-              sections.remove(vs);
-              setState(() {});
-            },
-            color: Colors.red,
-          ),
-        ],
+  Widget videoSection(int index, VideoSection vs) {
+    return IntrinsicWidth(
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: radius15,
+          border: Border.all(color: Colors.purple),
+        ),
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                textButtonAction(
+                  vs.start.toString().split(".").first,
+                  () {
+                    if (editing == index && onEditingStart) {
+                      editing = -1;
+                    } else {
+                      editing = index;
+                      onEditingStart = true;
+                    }
+                    _controller.seekTo(vs.start);
+                    setState(() {});
+                  },
+                  color: index == editing && onEditingStart ? Colors.purple.shade100 : Colors.white,
+                ),
+                const Text(' ~ '),
+                textButtonAction(
+                  vs.end.toString().split(".").first,
+                  () {
+                    if (editing == index && !onEditingStart) {
+                      editing = -1;
+                    } else {
+                      editing = index;
+                      onEditingStart = false;
+                    }
+                    _controller.seekTo(vs.end);
+                    setState(() {});
+                  },
+                  color: index == editing && !onEditingStart ? Colors.purple.shade100 : Colors.white,
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                iconButtonActionOutline(
+                  Icons.download_outlined,
+                  'editor_section_download'.tr(),
+                  () {},
+                ),
+                const SizedBox(width: 5),
+                iconButtonActionOutline(
+                  Icons.delete_outline,
+                  'editor_section_delete'.tr(),
+                  () {
+                    sections.remove(vs);
+                    setState(() {});
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
