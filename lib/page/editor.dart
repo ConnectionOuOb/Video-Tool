@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 import '../object.dart';
 import '../style.dart';
 import '../frame/footer.dart';
@@ -18,6 +20,7 @@ class PageEditor extends StatefulWidget {
 
 class _PageEditorState extends State<PageEditor> {
   bool isHover = false;
+  GlobalKey _keyPlayer = GlobalKey();
   late VideoPlayerController _controller;
 
   @override
@@ -88,6 +91,7 @@ class _PageEditorState extends State<PageEditor> {
         setState(() {});
       },
       child: Container(
+        key: _keyPlayer,
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           borderRadius: radius15,
@@ -113,26 +117,17 @@ class _PageEditorState extends State<PageEditor> {
                     children: [
                       GestureDetector(
                         onTapDown: (details) {
-                          final box = context.findRenderObject() as RenderBox;
-                          final tapPos = box.globalToLocal(details.globalPosition);
-                          final percentage = tapPos.dx / box.size.width;
+                          final playerBox = _keyPlayer.currentContext!.findRenderObject() as RenderBox;
+                          final percentage = details.localPosition.dx / playerBox.size.width;
 
-                          final targetPosition = percentage.clamp(0.0, 1.0);
-                          final duration = _controller.value.duration;
-                          final newPosition = duration * targetPosition;
-
-                          _controller.seekTo(newPosition);
+                          _controller.seekTo(_controller.value.duration * percentage.clamp(0.0, 1.0));
                         },
                         onHorizontalDragUpdate: (details) {
                           final box = context.findRenderObject() as RenderBox;
                           final tapPos = box.globalToLocal(details.globalPosition);
                           final percentage = tapPos.dx / box.size.width;
 
-                          final targetPosition = percentage.clamp(0.0, 1.0);
-                          final duration = _controller.value.duration;
-                          final newPosition = duration * targetPosition;
-
-                          _controller.seekTo(newPosition);
+                          _controller.seekTo(_controller.value.duration * percentage.clamp(0.0, 1.0));
                         },
                         child: SizedBox(
                           height: 10,
