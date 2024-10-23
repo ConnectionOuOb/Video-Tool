@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
-
-import '../object.dart';
 import '../style.dart';
+import '../object.dart';
 import '../frame/footer.dart';
 import '../ui/button/icon.dart';
 import 'dart:io';
@@ -20,7 +18,8 @@ class PageEditor extends StatefulWidget {
 
 class _PageEditorState extends State<PageEditor> {
   bool isHover = false;
-  GlobalKey _keyPlayer = GlobalKey();
+  List<VideoSection> sections = [];
+  final GlobalKey _keyPlayer = GlobalKey();
   late VideoPlayerController _controller;
 
   @override
@@ -227,6 +226,48 @@ class _PageEditorState extends State<PageEditor> {
   }
 
   Widget videoTool() {
-    return Container();
+    return Column(
+      children: [
+        if (sections.isNotEmpty) ...sections.map((e) => videoSection(e)),
+        iconButtonAction(
+          Icons.add,
+          'editor_section'.tr(),
+          () {
+            sections.add(VideoSection.init(_controller.value.position));
+
+            setState(() {});
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget videoSection(VideoSection vs) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: radius15,
+        color: Colors.purple.withOpacity(0.1),
+      ),
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.all(10),
+      child: Wrap(
+        children: [
+          Text(
+            "${vs.start.inSeconds} - ${vs.end.inSeconds}",
+            style: h2,
+          ),
+          const SizedBox(width: 10),
+          iconButtonAction(
+            Icons.delete_outline,
+            'editor_delete'.tr(),
+            () {
+              sections.remove(vs);
+              setState(() {});
+            },
+            color: Colors.red,
+          ),
+        ],
+      ),
+    );
   }
 }
