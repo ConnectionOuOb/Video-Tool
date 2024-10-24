@@ -21,3 +21,20 @@ class Video {
     };
   }
 }
+
+class VideoSection {
+  Duration start;
+  Duration end;
+
+  VideoSection({
+    required this.start,
+    required this.end,
+  });
+
+  factory VideoSection.init(Duration start) {
+    return VideoSection(
+      start: start,
+      end: start + const Duration(seconds: 15),
+    );
+  }
+}
