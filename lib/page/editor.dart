@@ -21,6 +21,7 @@ class _PageEditorState extends State<PageEditor> {
   int editing = -1;
   bool isHover = false;
   bool onEditingStart = true;
+  Duration defaultDuration = const Duration(seconds: 15);
   List<VideoSection> sections = [];
   final GlobalKey _keyPlayer = GlobalKey();
   late VideoPlayerController _controller;
@@ -121,15 +122,36 @@ class _PageEditorState extends State<PageEditor> {
                         onTapDown: (details) {
                           final playerBox = _keyPlayer.currentContext!.findRenderObject() as RenderBox;
                           final percentage = details.localPosition.dx / playerBox.size.width;
+                          final targetTime = _controller.value.duration * percentage.clamp(0.0, 1.0);
 
-                          _controller.seekTo(_controller.value.duration * percentage.clamp(0.0, 1.0));
+                          if (editing >= 0) {
+                            if (onEditingStart) {
+                              sections[editing].start = targetTime;
+                              sections[editing].end = targetTime + defaultDuration;
+                            } else {
+                              sections[editing].end = targetTime;
+                            }
+                          }
+
+                          _controller.seekTo(targetTime);
+                          setState(() {});
                         },
                         onHorizontalDragUpdate: (details) {
                           final box = context.findRenderObject() as RenderBox;
-                          final tapPos = box.globalToLocal(details.globalPosition);
-                          final percentage = tapPos.dx / box.size.width;
+                          final percentage = box.globalToLocal(details.globalPosition).dx / box.size.width;
+                          final targetTime = _controller.value.duration * percentage.clamp(0.0, 1.0);
 
-                          _controller.seekTo(_controller.value.duration * percentage.clamp(0.0, 1.0));
+                          if (editing >= 0) {
+                            if (onEditingStart) {
+                              sections[editing].start = targetTime;
+                              sections[editing].end = targetTime + defaultDuration;
+                            } else {
+                              sections[editing].end = targetTime;
+                            }
+                          }
+
+                          _controller.seekTo(targetTime);
+                          setState(() {});
                         },
                         child: SizedBox(
                           height: 10,

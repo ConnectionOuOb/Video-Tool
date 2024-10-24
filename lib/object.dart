@@ -34,7 +34,7 @@ class VideoSection {
   factory VideoSection.init(Duration start) {
     return VideoSection(
       start: start,
-      end: start + const Duration(seconds: 5),
+      end: start + const Duration(seconds: 15),
     );
   }
 }
