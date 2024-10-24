@@ -127,7 +127,6 @@ class _PageEditorState extends State<PageEditor> {
                           if (editing >= 0) {
                             if (onEditingStart) {
                               sections[editing].start = targetTime;
-                              sections[editing].end = targetTime + defaultDuration;
                             } else {
                               sections[editing].end = targetTime;
                             }
@@ -144,7 +143,6 @@ class _PageEditorState extends State<PageEditor> {
                           if (editing >= 0) {
                             if (onEditingStart) {
                               sections[editing].start = targetTime;
-                              sections[editing].end = targetTime + defaultDuration;
                             } else {
                               sections[editing].end = targetTime;
                             }
@@ -258,7 +256,6 @@ class _PageEditorState extends State<PageEditor> {
           'editor_section_add'.tr(),
           () {
             sections.add(VideoSection.init(_controller.value.position));
-
             setState(() {});
           },
         ),
@@ -285,38 +282,34 @@ class _PageEditorState extends State<PageEditor> {
         padding: const EdgeInsets.all(10),
         child: Column(
           children: [
-            Row(
-              children: [
-                textButtonAction(
-                  vs.start.toString().split(".").first,
+            textButtonAction(
+              vs.start.toString().split(".").first,
                   () {
-                    if (editing == index && onEditingStart) {
-                      editing = -1;
-                    } else {
-                      editing = index;
-                      onEditingStart = true;
-                    }
-                    _controller.seekTo(vs.start);
-                    setState(() {});
-                  },
-                  color: index == editing && onEditingStart ? Colors.purple.shade100 : Colors.white,
-                ),
-                const Text(' ~ '),
-                textButtonAction(
-                  vs.end.toString().split(".").first,
+                if (editing == index && onEditingStart) {
+                  editing = -1;
+                } else {
+                  editing = index;
+                  onEditingStart = true;
+                }
+                _controller.seekTo(vs.start);
+                setState(() {});
+              },
+              color: index == editing && onEditingStart ? Colors.purple.shade100 : Colors.white,
+            ),
+            const Text('▼'),
+            textButtonAction(
+              vs.end.toString().split(".").first,
                   () {
-                    if (editing == index && !onEditingStart) {
-                      editing = -1;
-                    } else {
-                      editing = index;
-                      onEditingStart = false;
-                    }
-                    _controller.seekTo(vs.end);
-                    setState(() {});
-                  },
-                  color: index == editing && !onEditingStart ? Colors.purple.shade100 : Colors.white,
-                ),
-              ],
+                if (editing == index && !onEditingStart) {
+                  editing = -1;
+                } else {
+                  editing = index;
+                  onEditingStart = false;
+                }
+                _controller.seekTo(vs.end);
+                setState(() {});
+              },
+              color: index == editing && !onEditingStart ? Colors.purple.shade100 : Colors.white,
             ),
             const SizedBox(height: 10),
             Row(
