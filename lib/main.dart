@@ -1,3 +1,5 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+
 import 'config.dart';
 import 'io/copy.dart';
 import 'page/home.dart';
@@ -36,6 +38,7 @@ class VideoTool extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       localizationsDelegates: context.localizationDelegates,
       home: const PageHome(),
+      builder: EasyLoading.init(),
     );
   }
 }

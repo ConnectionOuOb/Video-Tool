@@ -24,9 +24,13 @@
   "editor_section_add": "新增影片區段",
   "editor_section_delete": "刪除影片區段",
   "editor_section_download": "下載影片區段",
+  "editor_section_error": "結束時間不能比開始時間前面",
+  "editor_section_download_success": "影片區段已下載",
+  "editor_section_download_error": "影片區段下載失敗",
   "info": "通知",
   "edit": "編輯",
   "error": "錯誤",
   "cancel": "取消",
-  "confirm": "確定"
+  "confirm": "確定",
+  "loading": "載入中"
 }

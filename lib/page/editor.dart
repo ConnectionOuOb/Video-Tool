@@ -1,12 +1,16 @@
 import '../style.dart';
 import '../object.dart';
+import '../io/clip.dart';
+import '../io/picker.dart';
 import '../frame/footer.dart';
+import '../ui/pop/alert.dart';
 import '../ui/button/text.dart';
 import '../ui/button/icon.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class PageEditor extends StatefulWidget {
   const PageEditor({super.key, required this.video});
@@ -284,7 +288,7 @@ class _PageEditorState extends State<PageEditor> {
           children: [
             textButtonAction(
               vs.start.toString().split(".").first,
-                  () {
+              () {
                 if (editing == index && onEditingStart) {
                   editing = -1;
                 } else {
@@ -299,7 +303,7 @@ class _PageEditorState extends State<PageEditor> {
             const Text('▼'),
             textButtonAction(
               vs.end.toString().split(".").first,
-                  () {
+              () {
                 if (editing == index && !onEditingStart) {
                   editing = -1;
                 } else {
@@ -318,7 +322,34 @@ class _PageEditorState extends State<PageEditor> {
                 iconButtonActionOutline(
                   Icons.download_outlined,
                   'editor_section_download'.tr(),
-                  () {},
+                  () {
+                    if (vs.start > vs.end) {
+                      showInfo(context, 'editor_section_error'.tr());
+                    } else {
+                      selectFolder().then((value) {
+                        if (value.isEmpty) {
+                          showInfo(context, 'editor_section_not_select'.tr(), isAlert: true);
+                          return;
+                        } else {
+                          EasyLoading.show(status: 'loading'.tr());
+                          clipVideo(
+                            widget.video.path,
+                            value,
+                            vs.start.toString(),
+                            vs.end.toString(),
+                          ).then((value) {
+                            EasyLoading.dismiss();
+                            print(value);
+                            if (value.isEmpty) {
+                              showInfo(context, "editor_section_download_success".tr());
+                            } else {
+                              showInfo(context, "editor_section_download_error".tr());
+                            }
+                          });
+                        }
+                      });
+                    }
+                  },
                 ),
                 const SizedBox(width: 5),
                 iconButtonActionOutline(
