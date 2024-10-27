@@ -1,12 +1,16 @@
 import '../style.dart';
 import '../object.dart';
+import '../io/clip.dart';
+import '../io/picker.dart';
 import '../frame/footer.dart';
+import '../ui/pop/alert.dart';
 import '../ui/button/text.dart';
 import '../ui/button/icon.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class PageEditor extends StatefulWidget {
   const PageEditor({super.key, required this.video});
@@ -127,7 +131,6 @@ class _PageEditorState extends State<PageEditor> {
                           if (editing >= 0) {
                             if (onEditingStart) {
                               sections[editing].start = targetTime;
-                              sections[editing].end = targetTime + defaultDuration;
                             } else {
                               sections[editing].end = targetTime;
                             }
@@ -144,7 +147,6 @@ class _PageEditorState extends State<PageEditor> {
                           if (editing >= 0) {
                             if (onEditingStart) {
                               sections[editing].start = targetTime;
-                              sections[editing].end = targetTime + defaultDuration;
                             } else {
                               sections[editing].end = targetTime;
                             }
@@ -258,7 +260,6 @@ class _PageEditorState extends State<PageEditor> {
           'editor_section_add'.tr(),
           () {
             sections.add(VideoSection.init(_controller.value.position));
-
             setState(() {});
           },
         ),
@@ -285,38 +286,34 @@ class _PageEditorState extends State<PageEditor> {
         padding: const EdgeInsets.all(10),
         child: Column(
           children: [
-            Row(
-              children: [
-                textButtonAction(
-                  vs.start.toString().split(".").first,
-                  () {
-                    if (editing == index && onEditingStart) {
-                      editing = -1;
-                    } else {
-                      editing = index;
-                      onEditingStart = true;
-                    }
-                    _controller.seekTo(vs.start);
-                    setState(() {});
-                  },
-                  color: index == editing && onEditingStart ? Colors.purple.shade100 : Colors.white,
-                ),
-                const Text(' ~ '),
-                textButtonAction(
-                  vs.end.toString().split(".").first,
-                  () {
-                    if (editing == index && !onEditingStart) {
-                      editing = -1;
-                    } else {
-                      editing = index;
-                      onEditingStart = false;
-                    }
-                    _controller.seekTo(vs.end);
-                    setState(() {});
-                  },
-                  color: index == editing && !onEditingStart ? Colors.purple.shade100 : Colors.white,
-                ),
-              ],
+            textButtonAction(
+              vs.start.toString().split(".").first,
+              () {
+                if (editing == index && onEditingStart) {
+                  editing = -1;
+                } else {
+                  editing = index;
+                  onEditingStart = true;
+                }
+                _controller.seekTo(vs.start);
+                setState(() {});
+              },
+              color: index == editing && onEditingStart ? Colors.purple.shade100 : Colors.white,
+            ),
+            const Text('▼'),
+            textButtonAction(
+              vs.end.toString().split(".").first,
+              () {
+                if (editing == index && !onEditingStart) {
+                  editing = -1;
+                } else {
+                  editing = index;
+                  onEditingStart = false;
+                }
+                _controller.seekTo(vs.end);
+                setState(() {});
+              },
+              color: index == editing && !onEditingStart ? Colors.purple.shade100 : Colors.white,
             ),
             const SizedBox(height: 10),
             Row(
@@ -325,7 +322,34 @@ class _PageEditorState extends State<PageEditor> {
                 iconButtonActionOutline(
                   Icons.download_outlined,
                   'editor_section_download'.tr(),
-                  () {},
+                  () {
+                    if (vs.start > vs.end) {
+                      showInfo(context, 'editor_section_error'.tr());
+                    } else {
+                      selectFolder().then((value) {
+                        if (value.isEmpty) {
+                          showInfo(context, 'editor_section_not_select'.tr(), isAlert: true);
+                          return;
+                        } else {
+                          EasyLoading.show(status: 'loading'.tr());
+                          clipVideo(
+                            widget.video.path,
+                            value,
+                            vs.start.toString(),
+                            vs.end.toString(),
+                          ).then((value) {
+                            EasyLoading.dismiss();
+                            print(value);
+                            if (value.isEmpty) {
+                              showInfo(context, "editor_section_download_success".tr());
+                            } else {
+                              showInfo(context, "editor_section_download_error".tr());
+                            }
+                          });
+                        }
+                      });
+                    }
+                  },
                 ),
                 const SizedBox(width: 5),
                 iconButtonActionOutline(

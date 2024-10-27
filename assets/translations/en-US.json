@@ -24,9 +24,13 @@
   "editor_section_add": "Add video section",
   "editor_section_delete": "Delete video section",
   "editor_section_download": "Download video section",
+  "editor_section_error": "End time cannot be earlier than start time",
+  "editor_section_download_success": "Video section downloaded",
+  "editor_section_download_error": "Failed to download video section",
   "info": "Info",
   "edit": "Edit",
   "error": "Error",
   "cancel": "Cancel",
-  "confirm": "OK"
+  "confirm": "OK",
+  "loading": "Loading"
 }

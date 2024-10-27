@@ -1,5 +1,9 @@
 import 'package:file_picker/file_picker.dart';
 
+Future<String> selectFolder() async {
+  return await FilePicker.platform.getDirectoryPath() ?? '';
+}
+
 Future<String> selectSingleFilePath(List<String> extensions) async {
   List<PlatformFile> selectFiles = await selectExtFiles(extensions);
 
