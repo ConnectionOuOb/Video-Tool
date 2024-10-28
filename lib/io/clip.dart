@@ -3,7 +3,7 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
 Future<String> clipVideo(String inputPath, String dirOutput, String start, String end) async {
-  final String dirTemp = (await getTemporaryDirectory()).path;
+  final String dirTemp = (await getApplicationCacheDirectory()).path;
   final String timeStart = start.split(".")[0].replaceAll(":", "-");
   final String timeEnd = end.split(".")[0].replaceAll(":", "-");
   final String fileName = "${path.basenameWithoutExtension(inputPath)}.${timeStart}_$timeEnd";

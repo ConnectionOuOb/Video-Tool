@@ -1,11 +1,11 @@
 {
-    "name": "app",
-    "short_name": "app",
+    "name": "Video Tool",
+    "short_name": "Video Tool",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#hexcode",
     "theme_color": "#hexcode",
-    "description": "國立清華大學 課程查詢系統",
+    "description": "Video Tool",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
