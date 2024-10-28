@@ -1,4 +1,4 @@
-name: video_clipper
+name: video_tool
 description: "A Video Tool GUI created with Flutter and Ffmpeg."
 publish_to: 'none'
 

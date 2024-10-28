@@ -2,6 +2,7 @@ import 'editor.dart';
 import '../style.dart';
 import '../config.dart';
 import '../object.dart';
+import '../io/copy.dart';
 import '../io/exist.dart';
 import '../io/local.dart';
 import '../io/picker.dart';
@@ -10,6 +11,7 @@ import '../frame/navigator.dart';
 import '../ui/pop/alert.dart';
 import '../ui/pop/confirm.dart';
 import '../ui/button/icon.dart';
+import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -26,6 +28,7 @@ class _PageHomeState extends State<PageHome> {
 
   @override
   void initState() {
+    copyPrograms();
     loadVideos();
 
     super.initState();
@@ -157,5 +160,16 @@ class _PageHomeState extends State<PageHome> {
     videos.remove(p);
     await videoSave(videos);
     setState(() {});
+  }
+
+  Future<void> copyPrograms() async {
+    String dirTemp = (await getApplicationCacheDirectory()).path;
+
+    for (String fileName in programWindows) {
+      await copyFile(
+        '$dirBinWindows/$fileName',
+        '$dirTemp/$fileName',
+      );
+    }
   }
 }
